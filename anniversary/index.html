@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Годовщина</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bootstrap.css">
+    <script type="text/javascript">
+        // Набор функций
+        var base = {
+            // Поиск элементов по классу
+            findClass: function (str, node) {
+                if (document.getElementsByClassName) return (node || document).getElementsByClassName(str);
+                else {
+                    var node = node || document,
+                        list = node.getElementsByTagName('*'),
+                        length = list.length,
+                        Class = str.split(/\s+/),
+                        classes = Class.length,
+                        array = [],
+                        i, j, key;
+                    for (i = 0; i < length; i++) {
+                        key = true;
+                        for (j = 0; j < classes; j++)
+                            if (list[i].className.search('\\b' + Class[j] + '\\b') == -1) key = false;
+                        if (key) array.push(list[i]);
+                    }
+                    return array;
+                }
+            },
+            // Добавление обработчиков событий
+            bind: function (node, type, listener) {
+                if (node.addEventListener) node.addEventListener(type, listener, false);
+                //@cc_on node.attachEvent('on' + type, function() { listener.call(node); });
+            },
+            // Реализация DOMContentLoaded
+            init: [],
+            ready: function () {
+                if (!arguments.callee.done) {
+                    arguments.callee.done = true;
+                    if (this.timer) clearInterval(this.timer);
+                    var i, length = this.init.length;
+                    for (i = 0; i < length; i++) this.init[i]();
+                    this.init = [];
+                }
+            },
+            check: function () {
+                var _this = this,
+                    listener = function () {
+                        _this.ready();
+                    };
+                if (document.addEventListener) document.addEventListener('DOMContentLoaded', listener, false);
+                if (/KHTML|WebKit/i.test(navigator.userAgent)) this.timer = setInterval(function () {
+                    if (/loaded|complete/.test(document.readyState)) base.ready();
+                }, 10);
+                /*@cc_on document.write(unescape('%3CSCRIPT onreadystatechange="if(this.readyState==\'complete\') base.ready()" defer=defer src=\/\/:%3E%3C/SCRIPT%3E')); @*/
+                this.bind(window, 'load', listener);
+            }
+        };
+
+        // Функции для работы с панельками
+        var toggler = {
+            process: function () {
+                var i, list = base.findClass('toggler'),
+                    length = list.length;
+                for (i = 0; i < length; i++) base.bind(list[i], 'click', this.toggle);
+                list = base.findClass('content');
+                length = list.length;
+                for (i = 0; i < length; i++) list[i].style.display = 'none';
+            },
+            toggle: function () {
+                var content = base.findClass('content', this.parentNode)[0],
+                    e = arguments[0] || window.event;
+                if (content.style.display == 'block') {
+                    content.style.display = 'none';
+                    this.innerHTML = 'Показать';
+                } else {
+                    content.style.display = 'block';
+                    this.innerHTML = 'Скрыть';
+                }
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            }
+        };
+
+        // Ищем блоки с классом «toggle» по событию DOMContentLoaded
+        base.init.push(function () {
+            toggler.process();
+        });
+
+        // Запускаем проверку готовности DOM
+        base.check();
+    </script>
+    <style type="text/css">
+        .toggle {
+            width: 100%;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .toggle .content {
+            padding-top: 40px;
+            background-color: rgb(157, 201, 255);
+            text-align: center;
+        }
+
+        .toggle .content h2 {
+            padding-bottom: 70px;
+        }
+
+        .toggle .toggler {
+            font-size: 35px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-scrn">
+        <div class="container-fluid">
+            <div class="row">
+                <div
+                    class="col-xs-10 offset-xs-1 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+                    <h1 class="main-header">Поздравляю тебя с 1 годом и 8 месяцами любимая)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ind-content">
+        <div class="container">
+            <div class="row">
+                <p>С 02.10.2020 мы встречаемся с тобой уже целых 635 дней, а знаем друг друга еще дольше)<br><br>
+                    В этот наш с тобой замурчательный праздник я хочу пожелать нам всего самого хорошего и чтоб мы
+                    никогда не расставались и всягда были рядом, даже если мы далеко друг от друга!<br><br>Я люблю тебя
+                    сильно
+                    сильно❤️❤️❤️<br><br>
+                    Этот сайт будет существовать в интернете пока я его не удалю, ну или пока гитхаб не закроется, его
+                    не видит никто кроме тебя, потому
+                    что только у тебя есть доступ к моему сердешку))) Я предлагаю вспомнить наши с тобой светлые моменты
+                    с помощью фотографий, которые я нашел у себя в телефоне 😉<br><br>
+                    Што ты строишь из себя не пойми кого, ты же не строитель, поэтому открывай уже ссылочку)))
+                    <br><br></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toggle">
+        <div class="content">
+            <img width="400px" src="img/vipuscnoy.JPG" alt="">
+            <h2>Это мы на твоём окончании школы)</h2>
+            <img width="300px" src="img/cofeynya.jpg" alt="">
+            <h2>Это мы с тобой в кофейне тупа чиллим, надо будет сходить туда ещё разок😘</h2>
+            <img width="300px" src="img/nastyaiya.jpg" alt="">
+            <h2>А тут мы с тобой🤔 в этом, ну как его, ну у тебя допы были рядом, в общем ты поняла🙃</h2>
+            <img width="300px" src="img/peredtusoi.jpg" alt="">
+            <h2>А это мы перед тем как ты отправишься тусить в Сочи, жаль я не смог поехать(((😢</h2>
+            <img width="300px" src="img/huinulo.JPG" alt="">
+            <h2>Это ты меня фоткала, решил добавить эту фотку просто потому что меня там жостко хуйнуло😂</h2>
+            <img width="300px" src="img/Nastya.PNG" alt="">
+            <h2>А тут ты чилишь в Крыму, красавица моя😍</h2>
+            <p class="ind-contentic">Если честно, то у нас маловато фоток совместных, надо это срочно исправлять, а те
+                фотки которые есть у
+                нас я там мега уебищно выгляжу, через силу, через боль ради тебя я выбрал кое какие наши
+                фоточки)<br><br>
+                В общем в наш праздник я хочу чтоб мы были счастливы)
+            </p>
+        </div>
+        <a class="toggler" href="#">Показать</a>
+    </div>
+
+</body>
+
+</html>
